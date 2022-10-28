@@ -18,7 +18,6 @@
     		this.mercado_better_equal_elems();
     		this.mercado_toggle_slide_menu();
     		this.mercado_price_range();
-    		this.mercado_price_quantity();
     		this.mercado_remove_product_in_cart();
     		this.mercado_product_slider();
     		this.mercado_toggle_vertical_main_menu();
@@ -398,23 +397,6 @@
 					}
 				});
 			}, 1000);
-		},
-
-		mercado_price_quantity: function(){
-			if($(".quantity-input").length > 0){
-				$(".quantity-input").on('click', '.btn', function(event) {
-					event.preventDefault();
-					var _this = $(this),
-						_input = _this.siblings('input[name=product-quatity]'),
-						_current_value = _this.siblings('input[name=product-quatity]').val(),
-						_max_value = _this.siblings('input[name=product-quatity]').attr('data-max');
-					if(_this.hasClass('btn-reduce')){
-						if (parseInt(_current_value, 10) > 1) _input.val(parseInt(_current_value, 10) - 1);
-					}else {
-						if (parseInt(_current_value, 10) < parseInt(_max_value, 10)) _input.val(parseInt(_current_value, 10) + 1);
-					}
-				});
-			}
 		},
 
 		mercado_remove_product_in_cart: function(){

@@ -31,13 +31,16 @@
                                 <div class="price-field produtc-price"><p class="price">${{$item->model->regular_price}}</p></div>
                                 <div class="quantity">
                                     <div class="quantity-input">
-                                        <input type="text" name="product-quatity" value="{{$item->qty}}" data-max="120" pattern="[0-9]*" >
-                                        <a class="btn btn-increase" href="#" wire:click.prevent="increaseQuantity('{{$item->rowId}}')"></a>
+                                        <input type="text" name="product-quatity" value="{{isset($q) ? $q : $item->qty}}" data-max="120" pattern="[0-9]*" >
+                                        @if($countError)
+                                         <span style="color: red">Not so many</span>
+                                        @endif
+                                        <a class="btn btn-increase" href="#" wire:click.prevent="increaseQuantity('{{$item->rowId}}' , '{{$item->id}}'  )"></a>
                                         <a class="btn btn-reduce" href="#" wire:click.prevent="decreaseQuantity('{{$item->rowId}}')"></a>
                                     </div>
                                     <p class="text-center"><a href="#" wire:click.prevent="switchToSaveForLater('{{$item->rowId}}')">Save For Later</a></p>
                                 </div>
-                                <div class="price-field sub-total"><p class="price">${{$item->subtotal}}</p></div>
+                                <div class="price-field sub-total"><p class="price">${{ $item->subtotal}}</p></div>
                                 <div class="delete">
                                     <a href="#" wire:click.prevent="destroy('{{$item->rowId}}')" class="btn btn-delete" title="">
                                         <span>Delete from your cart</span>
@@ -146,3 +149,4 @@
     </div><!--end container-->
 
 </main>
+

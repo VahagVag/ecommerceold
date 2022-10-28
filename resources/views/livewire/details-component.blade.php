@@ -41,35 +41,12 @@
                         </div>
                     </div>
                     <div class="detail-info">
-                        <div class="product-rating">
-                            <style>
-                                .color-gray{
-                                    color: #e6e6e6 !important;
-                                }
-                            </style>
-                            @php
-                                $avgrating = 0;
-                            @endphp
-                            @foreach($product->orderItems->where('rstatus',1) as $orderItem)
-                                @php
-                                    $avgrating = $avgrating + $orderItem->review->rating;
-                                @endphp
-                            @endforeach
-                            @for($i=1;$i<=5;$i++)
-                                @if($i<=$avgrating)
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                @else
-                                    <i class="fa fa-star color-gray"  aria-hidden="true"></i>
-                                @endif
-                            @endfor
-                            <a href="#" class="count-review">({{$product->orderItems->where('rstatus',1)->count()}} review)</a>
-                        </div>
+                        <br>
+                        <br>
+                        <br>
                         <h2 class="product-name">{{$product->name}}</h2>
                         <div class="short-desc">
                             {!! $product->short_description !!}
-                        </div>
-                        <div class="wrap-social">
-                            <a class="link-socail" href="#"><img src="{{ asset('assets/images/social-list.png') }}" alt=""></a>
                         </div>
                           @if($sale and isset($sale->status))
                         @if($product->sale_price > 0 && $sale->status == 1 && $sale->sale_date > Carbon\Carbon::now())
@@ -84,14 +61,6 @@
                         <div class="stock-info in-stock">
                             <p class="availability">Availability: <b>{{$product->stock_status}}</b></p>
                         </div>
-                        <div class="quantity">
-                            <span>Quantity:</span>
-                            <div class="quantity-input">
-                                <input type="text" name="product-quantity" value="1" data-max="120" pattern="[0-9]*" wire:model="qty">
-                                <a class="btn btn-reduce" href="#" wire:click.prevent="decreaseQuantity"></a>
-                                <a class="btn btn-increase" href="#" wire:click.prevent="increaseQuantity"></a>
-                            </div>
-                        </div>
                         <div class="wrap-butons">
                              @if($sale and isset($sale->status))
                             @if($product->sale_price > 0 && $sale->status == 1 && $sale->sale_date > Carbon\Carbon::now())
@@ -100,10 +69,6 @@
                                 <a href="#" class="btn add-to-cart" wire:click.prevent="store({{$product->id}},'{{$product->name}}',{{$product->regular_price}})">Add to Cart</a>
                             @endif
                             @endif
-                            <div class="wrap-btn">
-                                <a href="#" class="btn btn-compare">Add Compare</a>
-                                <a href="#" class="btn btn-wishlist">Add Wishlist</a>
-                            </div>
                         </div>
                     </div>
                     <div class="advance-info">
@@ -197,7 +162,7 @@
                                     <div class="right-content">
                                         <b class="title">Free Shipping</b>
                                         <span class="subtitle">On Oder Over $99</span>
-                                        <p class="desc">Lorem Ipsum is simply dummy text of the printing...</p>
+                                        <p class="desc">Only in City Erevan</p>
                                     </div>
                                 </a>
                             </li>
@@ -208,7 +173,7 @@
                                     <div class="right-content">
                                         <b class="title">Special Offer</b>
                                         <span class="subtitle">Get a gift!</span>
-                                        <p class="desc">Lorem Ipsum is simply dummy text of the printing...</p>
+                                        <p class="desc">For our customers</p>
                                     </div>
                                 </a>
                             </li>
@@ -219,7 +184,7 @@
                                     <div class="right-content">
                                         <b class="title">Order Return</b>
                                         <span class="subtitle">Return within 7 days</span>
-                                        <p class="desc">Lorem Ipsum is simply dummy text of the printing...</p>
+                                        <p class="desc"></p>
                                     </div>
                                 </a>
                             </li>

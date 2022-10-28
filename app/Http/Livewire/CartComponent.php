@@ -15,6 +15,8 @@ use Cart;
 
 class CartComponent extends Component
 {
+
+
     protected $listeners = ['refreshComponent'=>'$refresh'];
 
     public $haveCouponCode;
@@ -23,19 +25,35 @@ class CartComponent extends Component
     public $subtotalAfterDiscount;
     public $taxAfterDiscount;
     public $totalAfterDiscount;
+    public $countError = false;
 
 
-   public function increaseQuantity($rowId)
+
+   public function increaseQuantity($rowId , $id)
    {
+
        $product = Cart::instance('cart')->get($rowId);
+
+       $productQty = Product::select('quantity')->find($id);
+
+
+       if($product->qty + 1 > $productQty->quantity)
+       {
+           $this->countError = true;
+           $this->emitTo('cart-count-component','refreshComponent');
+           return ;
+       }
+
        $qty = $product->qty + 1;
        Cart::instance('cart')->update($rowId,$qty);
        $this->emitTo('cart-count-component','refreshComponent');
+
    }
 
    public function decreaseQuantity($rowId)
    {
        $product = Cart::instance('cart')->get($rowId);
+       $this->countError = false;
        $qty = $product->qty - 1;
        Cart::instance('cart')->update($rowId,$qty);
        $this->emitTo('cart-count-component','refreshComponent');
@@ -77,23 +95,6 @@ class CartComponent extends Component
    {
        Cart::instance('saveForLater')->remove($rowId);
        session()->flash('s_success_message','Item has been removed from saved');
-   }
-
-   public function applyCouponCode()
-   {
-       $coupon = Coupon::where('code',$this->couponCode)->where('cart_value','<=',Cart::instance('cart')->subtotal())->first();
-       if(!$coupon)
-       {
-           session()->flash('coupon_message','Coupon code is invalid');
-           return;
-       }
-
-       session()->put('coupon',[
-           'code' => $coupon->code,
-           'type' => $coupon->type,
-           'value' => $coupon->value,
-           'cart_value' => $coupon->cart_value
-       ]);
    }
 
 
@@ -153,6 +154,7 @@ class CartComponent extends Component
                'tax' => Cart::instance('cart')->tax(),
                'total' => Cart::instance('cart')->total()
            ]);
+
        }
    }
 

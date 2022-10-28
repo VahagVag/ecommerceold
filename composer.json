@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "cartalyst/stripe-laravel": "^14.0",
         "digital-bird/shoppingcart": "^5.1",
         "guzzlehttp/guzzle": "^7.2",
         "hardevine/shoppingcart": "^3.1",
@@ -13,8 +14,10 @@
         "laravel/jetstream": "^2.11",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
+        "league/omnipay": "^3.2",
         "livewire/livewire": "^2.5",
-        "cartalyst/stripe-laravel": "^14.0"
+        "omnipay/paypal": "^3.0",
+        "paypal/rest-api-sdk-php": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

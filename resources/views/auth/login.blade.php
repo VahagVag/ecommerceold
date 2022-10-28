@@ -72,19 +72,13 @@
                                         </fieldset>
                                         <fieldset class="wrap-input">
                                             <label for="frm-login-uname">Email Address:</label>
-                                            <input type="email" id="frm-login-uname" name="email" placeholder="Type your email address" :value="old('email')" required autofocus>
+                                            <input type="email" id="frm-login-uname" name="email" placeholder="Type your email address" :value="old('email')" >
                                         </fieldset>
                                         <fieldset class="wrap-input">
                                             <label for="frm-login-pass">Password:</label>
-                                            <input type="password" id="frm-login-pass" name="password" placeholder="************" required autocomplete="current-password">
+                                            <input type="password" id="frm-login-pass" name="password" placeholder="************">
                                         </fieldset>
 
-                                        <fieldset class="wrap-input">
-                                            <label class="remember-field">
-                                                <input class="frm-input " name="remember" id="rememberme" value="forever" type="checkbox"><span>Remember me</span>
-                                            </label>
-                                            <a class="link-function left-position" href="{{route('password.request')}}" title="Forgotten password?">Forgotten password?</a>
-                                        </fieldset>
                                         <input type="submit" class="btn btn-submit" value="Login" name="submit">
                                     </form>
                                 </div>

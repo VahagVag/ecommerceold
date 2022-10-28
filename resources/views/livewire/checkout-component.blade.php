@@ -86,6 +86,7 @@
                             </div>
                         </div>
                 </div>
+
                     @if($ship_to_different)
                         <div class="col-md-12">
                         <div class="wrap-address-billing">
@@ -178,6 +179,17 @@
                         </p>
                     </div>
                     @endif
+
+                    @if($paymentmode == 'paypal')
+                        <p class="row-in-form">
+                        <label for="Paypal">Pay With Paypal</label>
+                            <button type="submit" class="btn btn-medium">Paypal Pay</button>
+                            @csrf
+                            <input type="hidden" name="amount" value="200">
+                        </p>
+                @endif
+
+
                     <p class="summary-info"><span class="title">Check / Money order</span></p>
                     <p class="summary-info"><span class="title">Credit Cart (saved)</span></p>
                     <div class="choose-payment-methods">
@@ -194,7 +206,7 @@
                         <label class="payment-method">
                             <input name="payment-method" id="payment-method-paypal" value="paypal" type="radio" wire:model="paymentmode">
                             <span>Paypal</span>
-                            <span class="payment-desc">You can pay with your credit</span>
+                            <span class="payment-desc"></span>
                             <span class="payment-desc">card if you don't have a paypal account</span>
                         </label>
                         @error('paymentmode') <span class="text-danger">{{$message}}</span>@enderror
@@ -204,23 +216,9 @@
                     @endif
                     <button type="submit" class="btn btn-medium">Place order now</button>
             </div>
-                <div class="summary-item shipping-method">
-                    <h4 class="title-box f-title">Shipping method</h4>
-                    <p class="summary-info"><span class="title">Flat Rate</span></p>
-                    <p class="summary-info"><span class="title">Fixed $50.00</span></p>
-                    <h4 class="title-box">Discount Codes</h4>
-                    <p class="row-in-form">
-                        <label for="coupon-code">Enter Your Coupon code:</label>
-                        <input id="coupon-code" type="text" name="coupon-code" value="" placeholder="">
-                    </p>
-                    <a href="#" class="btn btn-small">Apply</a>
-                </div>
             </div>
                 </form>
-
-
         </div><!--end main content area-->
     </div><!--end container-->
-
 </main>
 

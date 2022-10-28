@@ -35,6 +35,10 @@ use App\Http\Livewire\User\UserReviewComponent;
 use App\Http\Livewire\ContactComponent;
 use App\Http\Livewire\Admin\AdminContactComponent;
 use App\Http\Livewire\Admin\AdminSettingComponent;
+use App\Http\Controllers\PaymentController;
+use Omnipay\Omnipay;
+use App\Http\Controllers\PaypalController;
+use App\Http\Controllers\AboutUsController;
 
 
 /*
@@ -70,6 +74,11 @@ Route::get('/thankyou',ThankyouComponent::class)->name('thankyou');
 
 Route::get('/contact-us',ContactComponent::class)->name('contact');
 
+Route::post('pay',[PaymentController::class,'pay'])->name('payment');
+
+Route::get('paywithpaypal',[PaypalController::class,'payWithPaypal'])->name('paywithpaypal');
+Route::post('paypal',[PaypalController::class,'postPaymentWithPaypal'])->name('paypal');
+Route::get('paypal',[PaypalController::class,'getPaymentStatus'])->name('status');
 
 
 
@@ -113,3 +122,5 @@ Route::middleware(['auth:sanctum','verified'])->group(function (){
 
     Route::get('/admin/settings',AdminSettingComponent::class)->name('admin.settings');
 });
+
+

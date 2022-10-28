@@ -10,6 +10,7 @@ use Cart;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Stripe;
+use Omnipay\Omnipay;
 
 class CheckoutComponent extends Component
 {
@@ -108,14 +109,41 @@ class CheckoutComponent extends Component
             'paymentmode' => 'required'
         ]);
 
+        if($this->paymentmode == 'paypal')
+        {
+            $order = new Order();
+            $order->user_id = Auth::user()->id;
+            $order->subtotal = session()->get('checkout')['subtotal'];
+            $order->discount = session()->get('checkout')['discount'];
+            $order->tax = session()->get('checkout')['tax'];
+            $order->total = session()->get('checkout')['total'];
+            $order->firstname = $this->firstname;
+            $order->lastname = $this->lastname;
+            $order->email = $this->email;
+            $order->mobile = $this->mobile;
+            $order->line1 = $this->line1;
+            $order->line2 = $this->line2;
+            $order->city = $this->city;
+            $order->province = $this->province;
+            $order->country = $this->country;
+            $order->zipcode = $this->zipcode;
+            $order->status = 'ordered';
+            $order->is_shipping_different = $this->ship_to_different ? 1 : 0;
+            $order->save();
+
+
+
+            return redirect()->route('paywithpaypal');
+
+
+        }
+
         if ($this->paymentmode == 'card') {
             $this->validate([
-
                 'card_no' => 'required|numeric',
                 'exp_month' => 'required|numeric',
                 'exp_year' => 'required|numeric',
                 'cvc' => 'required|numeric'
-
             ]);
 
             $order = new Order();
@@ -137,6 +165,7 @@ class CheckoutComponent extends Component
             $order->status = 'ordered';
             $order->is_shipping_different = $this->ship_to_different ? 1 : 0;
             $order->save();
+
         }
 
         foreach (Cart::instance('cart')->content() as $item) {
@@ -175,6 +204,7 @@ class CheckoutComponent extends Component
             $shipping->zipcode = $this->s_zipcode;
             $shipping->save();
         }
+
 
         if ($this->paymentmode == 'cod') {
             $this->makeTransaction($order->id, 'pending');
