@@ -70,27 +70,7 @@
                         <p class="summary-info total-info "><span class="title">Total</span><b class="index">${{Cart::instance('cart')->total()}}</b></p>
                     @endif
                 </div>
-                @if(!Session::has('coupon'))
                 <div class="checkout-info">
-                    <label class="checkbox-field">
-                        <input class="frm-input " name="have-code" id="have-code" value="1" type="checkbox" wire:model="haveCouponCode"><span>I have promo code</span>
-                    </label>
-                    @if($haveCouponCode == 1)
-                        <div class="summary-item">
-                            <form wire:submit.prevent="applyCouponCode">
-                            <h4 class="title-box">Coupon Code</h4>
-                                @if(Session::has('coupon_message'))
-                                    <div class="alert alert-danger" role="danger">{{Session::get('coupon_message')}}</div>
-                                @endif
-                            <p class="row-in-form">
-                                <label for="coupon-code">Enter your coupon code:</label>
-                                <input type="text" name="coupon-name" wire:model="couponCode">
-                            </p>
-                            <button type="tect" name="coupon-code">Apply</button>
-                            </form>
-                        </div>
-                    @endif
-                    @endif
                     <a class="btn btn-checkout" href="#" wire:click.prevent="checkout">Check out</a>
                     <a class="link-to-shop" href="shop.html">Continue Shopping<i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a>
                 </div>
