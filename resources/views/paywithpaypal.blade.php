@@ -21,7 +21,8 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <h3 class="text-center" style="margin-top: 90px">Paypal integration Laravel</h3>
+            <h2><a href="{{route('product.cart')}}" class="btn btn-success">Back to shop</a></h2>
+            <h3 class="text-center" style="margin-top: 90px">Payment Information</h3>
             <div class="panel panel-default" style="margin-top: 60px">
                 @if($message = \Session::get('success'))
                     <div class="alert alert-success fade in">
@@ -48,7 +49,7 @@
                         <div class="form-group {{ $errors->has('amount')?'has-error':'' }}">
                             <label for="amount" class="col-md-4">Enter Amount</label>
                             <div class="col-md-6">
-                                <input id="amount" type="text" name="amount" value="{{ old('amount') }}" autofocus class="form-control">
+                                <input id="amount" type="text" readonly name="amount" value="{{session()->get('checkout')['total']}}" autofocus class="form-control">
                                 @error('amount')
                                 <span class="help-block">
                                     <strong>{{ $message }}</strong>
@@ -65,8 +66,32 @@
                         </div>
                     </form>
                 </div>
+                    <br>
+                    <div class="panel-heading"><strong>Products Name</strong></div>
+                    <ul class="products-cart">
+                        @foreach (Cart::instance('cart')->content() as $item)
+                            <li class="pr-cart-item">
+                                <div class="product-name">
+                                    <a class="link-to-product" href="{{route('product.details',['slug'=>$item->model->slug])}}">{{$item->model->name}}</a>
+                                </div>
+                                <div class="price-field produtc-price"><p class="price">${{$item->model->regular_price}}</p></div>
+                                <div class="price-field sub-total"><p class="price">${{ $item->subtotal}}</p></div>
+                            </li>
+                        @endforeach
+                    </ul>
+                    </div>
+        </div>
+            <div class=" main-content-area">
+                    <div class="wrap-iten-in-cart">
+                        @if(Session::has('success_message'))
+                            <div class="alert alert-success">
+                                <strong>Success</strong> {{Session::get('success_message')}}
+                            </div>
+                        @endif
+                    </div>
             </div>
         </div>
+
     </div>
 </div>
 

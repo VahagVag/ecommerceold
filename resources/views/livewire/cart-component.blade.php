@@ -54,6 +54,7 @@
                     <p>No item in cart</p>
                 @endif
             </div>
+        </div>
 
             <div class="summary">
                 <div class="order-summary">

@@ -43,7 +43,7 @@ class PaypalController extends Controller
         $item_1->setName('Watch')
             ->setCurrency('USD')
             ->setQuantity(1)
-            ->setPrice($request->get('amount'));
+            ->setPrice(session()->get('checkout')['total']);
 
         $item_list = new ItemList();
         $item_list->setItems([$item_1]);
@@ -62,6 +62,7 @@ class PaypalController extends Controller
         $redirect_urls->setReturnUrl(route('status'))
             ->setCancelUrl(route('status'));
 
+
         $payment = new Payment();
         $payment->setIntent('Sale')
             ->setPayer($payer)
@@ -70,6 +71,7 @@ class PaypalController extends Controller
 
         try {
             $payment->create($this->_api_context);
+
         }catch (\PayPal\Exception\PPConnectionException $ex){
             if (\Config::get('app.debug')){
                 \Session::put('error','Connection Timeout');
