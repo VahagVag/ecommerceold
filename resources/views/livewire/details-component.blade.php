@@ -41,62 +41,100 @@
                         </div>
                     </div>
                     <div class="detail-info">
-                        <br>
-                        <br>
-                        <br>
+                        <div class="product-rating">
+                            <style>
+                                .color-gray{
+                                    color: #e6e6e6 !important;
+                                }
+                            </style>
+                            @php
+                                $avgrating = 0;
+                            @endphp
+                            @foreach($product->orderItems->where('rstatus',1) as $orderItem)
+                                @php
+                                    $avgrating = $avgrating + $orderItem->review->rating / $product->orderItems->where('rstatus',1)->count();
+                                @endphp
+                            @endforeach
+                            @for($i=1;$i<=5;$i++)
+                                @if($i<=$avgrating)
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                @else
+                                    <i class="fa fa-star color-gray" aria-hidden="true"></i>
+                                @endif
+                            @endfor
+                            <a href="#" class="count-review">({{$product->orderItems->where('rstatus',1)->count()}} review)</a>
+                        </div>
                         <h2 class="product-name">{{$product->name}}</h2>
                         <div class="short-desc">
                             {!! $product->short_description !!}
                         </div>
-                          @if($sale and isset($sale->status))
-                        @if($product->sale_price > 0 && $sale->status == 1 && $sale->sale_date > Carbon\Carbon::now())
-                            <div class="wrap-price">
-                                <span class="product-price">${{$product->sale_price}}</span>
-                                <del><span class="product-price regprice">${{$product->regular_price}}</span></del>
-                            </div>
-                        @else
-                            <div class="wrap-price"><span class="product-price">${{$product->regular_price}}</span></div>
+                        @if($sale and isset($sale->status))
+                            @if($product->sale_price > 0 && $sale->status == 1 && $sale->sale_date > Carbon\Carbon::now())
+                                <div class="wrap-price">
+                                    <span class="product-price">${{$product->sale_price}}</span>
+                                    <del><span class="product-price regprice">${{$product->regular_price}}</span></del>
+                                </div>
+                            @else
+                                <div class="wrap-price"><span class="product-price">${{$product->regular_price}}</span></div>
+                            @endif
                         @endif
-                         @endif
                         <div class="stock-info in-stock">
                             <p class="availability">Availability: <b>{{$product->stock_status}}</b></p>
                         </div>
                         <div class="wrap-butons">
-                             @if($sale and isset($sale->status))
-                            @if($product->sale_price > 0 && $sale->status == 1 && $sale->sale_date > Carbon\Carbon::now())
-                                <a href="#" class="btn add-to-cart" wire:click.prevent="store({{$product->id}},'{{$product->name}}',{{$product->sale_price}})">Add to Cart</a>
-                            @else
-                                <a href="#" class="btn add-to-cart" wire:click.prevent="store({{$product->id}},'{{$product->name}}',{{$product->regular_price}})">Add to Cart</a>
-                            @endif
+                            @if($sale and isset($sale->status))
+                                @if($product->sale_price > 0 && $sale->status == 1 && $sale->sale_date > Carbon\Carbon::now())
+                                    <a href="#" class="btn add-to-cart" wire:click.prevent="store({{$product->id}},'{{$product->name}}',{{$product->sale_price}})">Add to Cart</a>
+                                @else
+                                    <a href="#" class="btn add-to-cart" wire:click.prevent="store({{$product->id}},'{{$product->name}}',{{$product->regular_price}})">Add to Cart</a>
+                                @endif
                             @endif
                         </div>
                     </div>
                     <div class="advance-info">
                         <div class="tab-control normal">
                             <a href="#description" class="tab-control-item active">description</a>
-                            <a href="#add_infomation" class="tab-control-item">Addtional Infomation</a>
+                            <a href="#add_infomation" class="tab-control-item">Leave Comment</a>
                             <a href="#review" class="tab-control-item">Reviews</a>
                         </div>
                         <div class="tab-contents">
                             <div class="tab-content-item active" id="description">
                                 {!! $product->description !!}
                             </div>
+
+
                             <div class="tab-content-item " id="add_infomation">
-                                <table class="shop_attributes">
-                                    <tbody>
-                                    <tr>
-                                        <th>Weight</th><td class="product_weight">1 kg</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Dimensions</th><td class="product_dimensions">12 x 15 x 23 cm</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Color</th><td><p>Black, Blue, Grey, Violet, Yellow</p></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                                <div class="comment-area mt-4">
+                                    <div class="card card-body">
+                                        <h6 class="card-title">Leave Comment</h6>
+                                        <form action="{{ url('comments') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="post_slug" value="{{ $product->name }}">
+                                            <textarea name="comment_body" class="form-control" rows="3" required></textarea>
+                                            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                                        </form>
+                                    </div>
+
+                                    @forelse($product->comments as $comment)
+                                        <div class="card card-body shadow-sm mt-3">
+                                            <div class="detail-area">
+                                                <h6 class="user-name mb-1">
+                                                    @if($comment->user)
+                                                        {{ $comment->user->name }}
+                                                    @endif
+                                                    <small class="ms-3 text-primary">Commented on: {{ $comment->created_at->format('d-m-Y') }}</small>
+                                                </h6>
+                                                <p class="user-comment mb-1">
+                                                    {!! $comment->comment_body !!}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <h6>No Comments</h6>
+                                    @endforelse
+                                </div>
                             </div>
-                            <div class="tab-content-item " id="review">
+                            <div class="tab-content-item" id="review">
 
                                 <div class="wrap-review-form">
                                     <style>
@@ -117,7 +155,6 @@
                                         }
 
                                     </style>
-
                                     <div id="comments">
                                         <h2 class="woocommerce-Reviews-title">{{$product->orderItems->where('rstatus',1)->count()}}<span>{{$product->name}}</span></h2>
                                         <ol class="commentlist">

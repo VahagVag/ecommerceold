@@ -60,6 +60,9 @@
                     </ul>
                 </div>
                 <div class="row">
+                    @if(session('message'))
+                        <h6 class="alert alert-warning mb-3">{{ session('message') }}</h6>
+                    @endif
                     <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12 col-md-offset-3">
                         <div class=" main-content-area">
                             <div class="wrap-login-item ">

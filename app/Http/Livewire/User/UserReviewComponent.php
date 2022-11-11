@@ -37,6 +37,7 @@ class UserReviewComponent extends Component
         $review->comment = $this->comment;
         $review->order_item_id = $this->order_item_id;
         $review->save();
+        session()->flash('message','Your review has been added successfully!');
 
         $orderItem = OrderItem::find($this->order_item_id);
         $orderItem->rstatus = true;

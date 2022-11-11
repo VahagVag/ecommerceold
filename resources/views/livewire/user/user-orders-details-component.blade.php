@@ -2,10 +2,8 @@
     <div class="container" style="padding: 30px 0;">
         <div class="row">
             <div class="col-md-12">
-                @if(Session::has('order_message'))
-                    <div class="alert alert-success" role="alert">{{Session::get('order_message')}}</div>
-                @endif
                 <div class="panel panel-default">
+
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-md-6">
@@ -13,28 +11,29 @@
                             </div>
                             <div class="col-md-6">
                                 <a href="{{route('user.orders')}}" class="btn btn-success pull-right">My Orders</a>
-                                @if($order->status == 'ordered')
-                                <a href="#" wire:click.prevent="cancelOrder" style="margin-right: 20px;" class="btn btn-warning pull-right">Cancel Order</a>
-                                @endif
                             </div>
                         </div>
                     </div>
+
                     <div class="panel-body">
                         <table class="table">
-                            <th>Order Id</th>
-                            <td>{{$order->id}}</td>
-                            <th>Order Date</th>
-                            <td>{{$order->created_at}}</td>
-                            <th>Status</th>
-                            <td>{{$order->status}}</td>
-                            @if($order->status == 'delivered')
-                                <th>Delivery Date</th>
-                                <td>{{$order->delivery_date}}</td>
-                            @elseif($order->status == 'canceled')
-                            <th>Canceled Date</th>
-                            <td>{{$order->canceled_date}}</td>
-                            @endif
+                            <tr>
+                                <th>Order Id</th>
+                                <td>{{$order->id}}</td>
+                                <th>Order Date</th>
+                                <td>{{$order->created_at}}</td>
+                                <th>Status</th>
+                                <td>{{$order->status}}</td>
+                                @if($order->status == "delivered")
+                                    <th>Delivered Date</th>
+                                    <td>{{$order->delivered_date}}</td>
+                                @elseif($order->status == "canceled")
+                                    <th>Cancellation Date</th>
+                                    <td>{{$order->canceled_date}}</td>
+                                @endif
+                            </tr>
                         </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -42,10 +41,17 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                       Order Items
-                       </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                Order Items
+                            </div>
+                            <div class="col-md-6">
+
+                            </div>
+                        </div>
                     </div>
                     <div class="panel-body">
+
                         <div class="wrap-iten-in-cart">
                             <h3 class="box-title">Products Name</h3>
                             <ul class="products-cart">
@@ -63,7 +69,7 @@
                                         </div>
                                         <div class="price-field sub-total"><p class="price">${{$item->price * $item->quantity}}</p></div>
                                         @if($order->status == 'delivered' && $item->rstatus == false)
-                                        <div class="price-field sub-total"><p class="price"><a href="{{route('user.review',['order_item_id'=>$item->id])}}">Write Review</a></p></div>
+                                        <div class="price-field sub-total"><p class="price"><a href="{{ route('user.review',['order_item_id'=>$item->id])}}">Write Review</a></p></div>
                                         @endif
                                     </li>
                                 @endforeach
@@ -82,7 +88,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
@@ -168,38 +173,10 @@
                                     <th>{{$order->shipping->zipcode}}</th>
                                 </tr>
                             </table>
-
                         </div>
                     </div>
                 </div>
             </div>
         @endif
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Transaction
-                    </div>
-                    <div class="panel-body">
-{{--                        <table class="table">--}}
-{{--                            <tr>--}}
-{{--                                <th>Transaction Mode</th>--}}
-{{--                                <td>{{$order->transaction->mode}}</td>--}}
-{{--                            </tr>--}}
-{{--                            <tr>--}}
-{{--                                <th>Status</th>--}}
-{{--                                <td>{{$order->transaction->status}}</td>--}}
-{{--                            </tr>--}}
-{{--                            <tr>--}}
-{{--                                <th>Transaction Date</th>--}}
-{{--                                <td>{{$order->transaction->created_at}}</td>--}}
-{{--                            </tr>--}}
-{{--                        </table>--}}
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 </div>

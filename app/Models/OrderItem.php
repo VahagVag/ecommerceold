@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrderItem extends Model
+
+class   OrderItem extends Model
 {
     use HasFactory;
 
@@ -24,5 +25,10 @@ class OrderItem extends Model
     public function review()
     {
         return $this->hasOne(Review::class,'order_item_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasOne(Comment::class,'order_item_id');
     }
 }

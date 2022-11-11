@@ -12,9 +12,12 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        All Orders
+                        My Orders
                     </div>
                     <div class="panel-body">
+                        @if(Session::has('order_message'))
+                            <div class="alert alert-success" role="alert">{{Session::get('order_message')}}</div>
+                        @endif
                         <table class="table table-striped">
                             <thead>
                             <tr>
@@ -30,7 +33,7 @@
                                 <th>Zipcode</th>
                                 <th>Status</th>
                                 <th>Order Date</th>
-                                <th>Action</th>
+                                <th colspan="2" class="text-center">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -48,7 +51,7 @@
                                     <td>{{$order->zipcode}}</td>
                                     <td>{{$order->status}}</td>
                                     <td>{{$order->created_at}}</td>
-                                    <td><a href="{{route('user.orderdetails',['order_id'=>$order->id])}}" class="btn btn-info btn-sm">Details</a> </td>
+                                    <td><a href="{{route('user.ordersdetails',['order_id'=>$order->id])}}" class="btn btn-info btn-sm">Details</a> </td>
                                 </tr>
                             @endforeach
                             </tbody>

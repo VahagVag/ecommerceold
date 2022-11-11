@@ -78,12 +78,16 @@ Route::post('paypal',[PaypalController::class,'postPaymentWithPaypal'])->name('p
 Route::get('paypal',[PaypalController::class,'getPaymentStatus'])->name('status');
 
 
+Route::post('comments',[App\Http\Controllers\ComentController::class,'store']);
+
+
+
 
 
 Route::middleware(['auth:sanctum','verified'])->group(function (){
     Route::get('/user/dashboard',UserDashboardComponent::class)->name('user.dashboard');
     Route::get('/user/orders',UserOrdersComponent::class)->name('user.orders');
-    Route::get('/user/orders/{order_id}',UserOrdersDetailsComponent::class)->name('user.orderdetails');
+    Route::get('/user/orders/{order_id}',UserOrdersDetailsComponent::class)->name('user.ordersdetails');
     Route::get('/user/review/{order_item_id}',UserReviewComponent::class)->name('user.review');
 });
 
