@@ -79,6 +79,7 @@ Route::get('paypal',[PaypalController::class,'getPaymentStatus'])->name('status'
 
 
 Route::post('comments',[App\Http\Controllers\ComentController::class,'store']);
+Route::post('add_reply',[App\Http\Controllers\ComentController::class,'add_reply']);
 
 
 

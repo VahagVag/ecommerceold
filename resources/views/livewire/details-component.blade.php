@@ -94,7 +94,7 @@
                     <div class="advance-info">
                         <div class="tab-control normal">
                             <a href="#description" class="tab-control-item active">description</a>
-                            <a href="#add_infomation" class="tab-control-item">Leave Comment</a>
+                            <a href="#add_infomation" class="tab-control-item">Comments</a>
                             <a href="#review" class="tab-control-item">Reviews</a>
                         </div>
                         <div class="tab-contents">
@@ -125,13 +125,35 @@
                                                     <small class="ms-3 text-primary">Commented on: {{ $comment->created_at->format('d-m-Y') }}</small>
                                                 </h6>
                                                 <p class="user-comment mb-1">
-                                                    {!! $comment->comment_body !!}
+                                                {!! $comment->comment_body !!}
+                                                    <a style="color: blue" href="javascript:void(0);" onclick="reply(this)" data-Commentid="{{$comment->id}}">Reply</a>
+                                                <div>
+                                                    @foreach($reply as $rep)
+                                                        @if($rep->comment_id == $comment->id)
+
+                                                    <div style="padding-left: 3%; padding-bottom: 10px; padding-bottom: 10px;">
+                                                        <b>{{$rep->name}}</b>
+                                                        <p>{{$rep->reply}}</p>
+                                                </div>
+                                                @endif
+                                                @endforeach
+                                            </div>
                                                 </p>
                                             </div>
                                         </div>
                                     @empty
                                         <h6>No Comments</h6>
                                     @endforelse
+                                    <div style="display: none;" class="replyDiv">
+                                        <form action="{{url('add_reply')}}" method="POST">
+                                            @csrf
+                                            <input type="text" id="commentId" name="commentId" hidden="">
+                                            <textarea style="height: 100px; width: 300px;"  name="reply"></textarea>
+                                            <br>
+                                            <button type="submit" class="btn btn-warning">Reply</button>
+                                            <a href="javascript::void(0);" class="btn" onclick="reply_close(this)">Close</a>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                             <div class="tab-content-item" id="review">
@@ -180,7 +202,6 @@
                                             @endforeach
                                         </ol>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -282,6 +303,33 @@
                     </div><!--End wrap-products-->
                 </div>
             </div>
+
+            <script type="text/javascript">
+
+                function reply(caller)
+                {
+                    document.getElementById('commentId').value=$(caller).attr('data-Commentid');
+
+                    $('.replyDiv').insertAfter($(caller));
+                    $('.replyDiv').show();
+                }
+
+                function reply_close(caller)
+                {
+                    $('.replyDiv').hide();
+                }
+            </script>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) {
+                    var scrollpos = localStorage.getItem('scrollpos');
+                    if (scrollpos) window.scrollTo(0, scrollpos);
+                });
+
+                window.onbeforeunload = function(e) {
+                    localStorage.setItem('scrollpos', window.scrollY);
+                };
+            </script>
 
         </div><!--end row-->
 

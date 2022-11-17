@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Product;
+use App\Models\Reply;
 
 class ComentController extends Controller
 {
@@ -27,7 +28,7 @@ class ComentController extends Controller
 
             }
 
-            $post = Product::where('slug', $request->post_slug)->first()  ;
+            $post = Product::where('name', $request->post_slug)->first();
 
 
 
@@ -54,5 +55,31 @@ class ComentController extends Controller
             return redirect('login')->with('message','Login first to comment');
         }
 
+    }
+
+    public function add_reply(Request $request)
+    {
+        if (Auth::id())
+        {
+            $reply = new reply;
+
+            $reply->name = Auth::user()->name;
+
+            $reply->user_id = Auth::user()->id;
+
+            $reply->comment_id = $request->commentId;
+
+            $reply->reply = $request->reply;
+
+            $reply->save();
+
+            return redirect()->back();
+
+
+        }
+        else
+        {
+            return redirect('login');
+        }
     }
 }
